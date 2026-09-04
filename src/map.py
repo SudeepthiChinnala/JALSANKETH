@@ -40,7 +40,7 @@ import sys
 import os
 import json
 import logging
-from typing import Dict, Any, List, Optional, Union
+from typing import Dict, Any, List, Optional, Union, Tuple
 import numpy as np
 import folium
 from folium.plugins import MarkerCluster
