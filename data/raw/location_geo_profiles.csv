@@ -1,0 +1,13 @@
+location_id,location_name,city,state,latitude,longitude,elevation_m,slope_deg,drainage_capacity_index,soil_saturation_baseline,proximity_to_waterbody_km,climate_zone
+LOC001,Mumbai - Dadar / Hindmata Lowland,Mumbai,Maharashtra,19.0178,72.8478,6.5,0.8,0.35,0.75,1.2,coastal_sw_monsoon
+LOC002,Chennai - Velachery Flood Basin,Chennai,Tamil Nadu,12.9815,80.218,8.0,0.5,0.3,0.8,0.8,coastal_ne_monsoon
+LOC003,Bengaluru - Bellandur Catchment,Bengaluru,Karnataka,12.9304,77.6784,870.0,2.2,0.4,0.55,0.5,plateau_thunderstorm
+LOC004,Patna - Ganga Floodplain (Rajendra Nagar),Patna,Bihar,25.6022,85.1589,53.0,0.4,0.25,0.85,1.5,gangetic_plain
+LOC005,Guwahati - Brahmaputra Basin (Zoo Road),Guwahati,Assam,26.1754,91.7766,55.0,1.5,0.38,0.88,2.0,ne_heavy_rain
+LOC006,Kochi - Vembanad Coastal Plain,Kochi,Kerala,9.9312,76.2673,4.0,0.3,0.42,0.82,0.4,coastal_sw_monsoon
+LOC007,Delhi - Yamuna Floodplain (Kashmere Gate),Delhi,Delhi,28.6672,77.2289,216.0,0.9,0.48,0.6,0.9,northern_plains
+LOC008,Kolkata - Hooghly Estuary (Central Avenue),Kolkata,West Bengal,22.5726,88.3639,9.0,0.4,0.32,0.78,1.1,delta_cyclonic
+LOC009,Hyderabad - Musi River Lowland (Amberpet),Hyderabad,Telangana,17.3871,78.513,505.0,1.8,0.45,0.5,0.6,plateau_thunderstorm
+LOC010,Bhubaneswar - Daya River Basin (Old Town),Bhubaneswar,Odisha,20.2444,85.8346,45.0,1.0,0.5,0.7,1.8,delta_cyclonic
+LOC011,Surat - Tapi Basin (Athwa Lines),Surat,Gujarat,21.1702,72.8311,13.0,0.6,0.4,0.68,1.0,coastal_sw_monsoon
+LOC012,Wayanad - Vythiri Foothills,Wayanad,Kerala,11.5527,76.0407,720.0,8.5,0.65,0.85,0.3,ghats_high_precipitation

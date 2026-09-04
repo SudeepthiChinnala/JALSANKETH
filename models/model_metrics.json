@@ -1,0 +1,88 @@
+{
+    "model_architecture": "XGBClassifier (Extreme Gradient Boosting)",
+    "prototype_status": "Hackathon Demo Prototype - Trained on Synthetic Meteorological Data",
+    "dataset_records_total": 15240,
+    "train_records": 12192,
+    "test_records": 3048,
+    "metrics": {
+        "accuracy": 0.9541,
+        "precision": 0.3012,
+        "recall": 0.6757,
+        "f1_score": 0.4167,
+        "roc_auc": 0.971,
+        "confusion_matrix": {
+            "true_negative": 2858,
+            "false_positive": 116,
+            "false_negative": 24,
+            "true_positive": 50
+        }
+    },
+    "top_features": [
+        {
+            "feature": "humidity",
+            "importance": 0.506148636341095
+        },
+        {
+            "feature": "vapor_pressure_deficit",
+            "importance": 0.13374614715576172
+        },
+        {
+            "feature": "dew_point_depression",
+            "importance": 0.12405344843864441
+        },
+        {
+            "feature": "instability_index",
+            "importance": 0.027711650356650352
+        },
+        {
+            "feature": "month_sin",
+            "importance": 0.023234037682414055
+        },
+        {
+            "feature": "wind_speed",
+            "importance": 0.016820944845676422
+        },
+        {
+            "feature": "temp_trend_24h",
+            "importance": 0.01258125714957714
+        },
+        {
+            "feature": "month_cos",
+            "importance": 0.012563100084662437
+        },
+        {
+            "feature": "rainfall_lag_1d",
+            "importance": 0.012426512315869331
+        },
+        {
+            "feature": "temperature",
+            "importance": 0.012204142287373543
+        }
+    ],
+    "features_used": [
+        "temperature",
+        "humidity",
+        "pressure",
+        "wind_speed",
+        "month_sin",
+        "month_cos",
+        "day_sin",
+        "day_cos",
+        "is_monsoon_sw",
+        "is_monsoon_ne",
+        "rainfall_lag_1d",
+        "rainfall_lag_3d_mean",
+        "rainfall_lag_7d_sum",
+        "pressure_trend_24h",
+        "temp_trend_24h",
+        "dew_point_est",
+        "dew_point_depression",
+        "vapor_pressure_deficit",
+        "instability_index",
+        "elevation",
+        "drainage_factor",
+        "drainage_deficit",
+        "elevation_vulnerability",
+        "runoff_potential_index"
+    ]
+}
