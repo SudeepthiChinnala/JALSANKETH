@@ -88,9 +88,60 @@ def aggregate_forecast_daily(hourly_df: pd.DataFrame) -> pd.DataFrame:
     daily_df = hourly_df.groupby('date').agg(agg_dict).reset_index()
     return daily_df
 
+import requests
+
+def fetch_live_station_forecast(lat: float, lon: float, timeout: int = 8) -> Optional[pd.DataFrame]:
+    """
+    Fetches real-time 7-day hourly forecast from Open-Meteo REST API.
+    Returns cleaned hourly DataFrame or None if offline / timed out.
+    """
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {
+        "latitude": round(lat, 4),
+        "longitude": round(lon, 4),
+        "hourly": [
+            "temperature_2m",
+            "relative_humidity_2m",
+            "precipitation",
+            "pressure_msl",
+            "wind_speed_10m",
+            "soil_moisture_0_to_7cm"
+        ],
+        "timezone": "Asia/Kolkata"
+    }
+    try:
+        resp = requests.get(url, params=params, timeout=timeout)
+        if resp.status_code == 200:
+            data = resp.json()
+            if "hourly" in data and data["hourly"]:
+                df = pd.DataFrame(data["hourly"])
+                col_map = {
+                    'time': 'datetime',
+                    'temperature_2m': 'temperature',
+                    'relative_humidity_2m': 'humidity',
+                    'precipitation': 'rainfall',
+                    'pressure_msl': 'pressure',
+                    'wind_speed_10m': 'wind_speed',
+                    'soil_moisture_0_to_7cm': 'soil_moisture'
+                }
+                df.rename(columns={k: v for k, v in col_map.items() if k in df.columns}, inplace=True)
+                df['datetime'] = pd.to_datetime(df['datetime'])
+                df['date'] = df['datetime'].dt.strftime('%Y-%m-%d')
+                num_cols = ['temperature', 'humidity', 'rainfall', 'pressure', 'wind_speed']
+                for c in num_cols:
+                    if c in df.columns:
+                        df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0.0)
+                return df
+    except Exception as e:
+        logger.warning(f"Live Open-Meteo fetch failed ({lat}, {lon}): {e}")
+    return None
+
+
 def process_forecast_for_telangana(
     csv_path: Optional[str] = None,
-    stations: Optional[List[Dict[str, Any]]] = None
+    stations: Optional[List[Dict[str, Any]]] = None,
+    hourly_override_df: Optional[pd.DataFrame] = None,
+    custom_weights: Optional[Dict[str, float]] = None
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     model_path = os.path.join(PROJECT_ROOT, 'models', 'heavy_rain_model.joblib')
     feat_path = os.path.join(PROJECT_ROOT, 'models', 'feature_columns.json')
@@ -101,7 +152,11 @@ def process_forecast_for_telangana(
     with open(feat_path, 'r') as f:
         feature_cols = json.load(f)
 
-    hourly_df = load_raw_forecast_csv(csv_path)
+    if hourly_override_df is not None and not hourly_override_df.empty:
+        hourly_df = hourly_override_df.copy()
+    else:
+        hourly_df = load_raw_forecast_csv(csv_path)
+
     base_daily = aggregate_forecast_daily(hourly_df)
     target_stations = stations or TELANGANA_STATIONS
     all_station_records = []
@@ -131,7 +186,7 @@ def process_forecast_for_telangana(
     engineered_df['heavy_rain_prob'] = model.predict_proba(X_mat)[:, 1]
     engineered_df['ml_heavy_rain_pred'] = model.predict(X_mat)
 
-    risk_engine = FloodRiskEngine()
+    risk_engine = FloodRiskEngine(custom_weights=custom_weights)
     evaluated_df = risk_engine.evaluate_dataframe(
         engineered_df,
         prob_col='heavy_rain_prob',
